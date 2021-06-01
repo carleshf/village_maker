@@ -51,6 +51,7 @@ class Board {
     this._action_rename = false
     this._show_action_bar = false
     this._show_board = true
+    this._special_keys = []
   }
   
   _draw_actions() {
@@ -124,24 +125,25 @@ class Board {
 
   
   key_pressed(key, keyValue, mx, my) {
-    if (key == 17) {
-      this._control_active = true
+    if (key == 17) { // control
+      this._special_keys.push('control')
+    } else if(key == 16) { // shift
+      this._special_keys.push('shift')
     } else if (key == 27) { // (ESC) Close action if started
       this._action_on = false
       this._action_rename = false
     } else {
       if(this._action_rename) {
-        if(key == 8) {
+        if(key == 8) { // Backspace
           this._map._name = this._map._name.slice(0, -1);
         } else if(32 <= key && key <= 126) {
           this._map._name += keyValue
         }
       } else {
         key = keyValue.toLowerCase()
-        console.log(key)
         switch(key) {
           case "s":
-            if(this._control_active) {
+            if(this._special_keys.indexOf('control') > -1) {
               this.export_json()
             } else {
               console.log("rotate_style")
@@ -149,15 +151,17 @@ class Board {
             }
             break
           case "i":
-            if(this._control_active) {
+            if(this._special_keys.indexOf('control') > -1) {
               this.export_png()
             } else {
               // TODO:?
             }
             break
           case "r":
-            if(this._control_active) {
+            if(this._special_keys.indexOf('control') > -1) {
               this._action_rename = true
+            } else if(this._special_keys.indexOf('shift') > -1) {
+              this._map.rotate(0.765)
             } else {
               this._map.rotate(0.017)
             }
@@ -211,7 +215,9 @@ class Board {
   
   key_released(key, keyValue, mx, my) {
     if(key == 17) {
-      this._control_active = false
+      this._special_keys.splice(this._special_keys.indexOf('control'), 1)
+    } else if(key == 16) {
+      this._special_keys.splice(this._special_keys.indexOf('shift'), 1)
     }
   }
   

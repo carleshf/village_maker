@@ -14,7 +14,8 @@ This is a small tool build upon [p5.js](https://p5js.org/), a JavaScript library
 | <kbd>n</kbd> | Previous block of actions |
 | <kbd>Enter</kbd> | Inittate action |
 | <kbd>Esc</kbd> | Close active action |
-| <kbd>r</kbd> | Rotate object (is available) |
+| <kbd>r</kbd> | Rotate object 1º (is available) |
+| <kbd>Sift</kbd> + <kbd>r</kbd> | Rotate object 45º (is available) |
 | <kbd>s</kbd> | Rotate style (if available) |
 | <kbd>Ctr</kbd> + <kbd>r</kbd> | Rename village |
 | <kbd>Ctr</kbd> + <kbd>s</kbd> | Download `.json` file for village |
