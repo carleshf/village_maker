@@ -132,6 +132,7 @@ class Board {
     } else if (key == 27) { // (ESC) Close action if started
       this._action_on = false
       this._action_rename = false
+      this._map.unselect()
     } else {
       if(this._action_rename) {
         if(key == 8) { // Backspace

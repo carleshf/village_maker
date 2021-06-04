@@ -6,6 +6,8 @@ var cvw = 800
 var cvh = 600
 var board = new Board(cvw, cvh)
 
+var tmp
+
 function setup() {
   let cnv = createCanvas(board._w, board._h)
   cnv.drop(board.import_json)

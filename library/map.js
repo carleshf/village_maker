@@ -69,13 +69,22 @@ class Map {
   }
 
   delete() {
-    // TODO
+    this._terrain = this._terrain.filter( (obj) => !obj._selected )
+    this._buildings = this._buildings.filter( (obj) => !obj._selected )
+    this._decor = this._decor.filter( (obj) => !obj._selected )
   }
 
   mouse_clicked(mx, my) {
-      this._terrain.forEach( (obj) => obj.is_selected(mx, my) )
-      this._buildings.forEach( (obj) => obj.is_selected(mx, my) )
-      this._decor.forEach( (obj) => obj.is_selected(mx, my) )
+    let sel = false
+    this._terrain.forEach( (obj) => {
+      if (!sel) { sel = obj.is_selected(mx, my) }
+    })
+    this._buildings.forEach( (obj) => {
+      if (!sel) { obj.is_selected(mx, my) }
+    })
+    this._decor.forEach( (obj) => {
+      if (!sel) { obj.is_selected(mx, my) }
+    })
   }
 
   add_to_terrain(obj) { 
