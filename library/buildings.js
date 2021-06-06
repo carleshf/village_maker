@@ -107,6 +107,7 @@ class TownHouse extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "TownHouse",
       props: this._props,
@@ -132,6 +133,7 @@ class LargeTownHouse extends Building {
     this._lyt = props.lyt
     this._chimeny = props.chm
     this._door = props.dor
+    this._props = props
   }
   
   is_selected(mx, my) {
@@ -232,6 +234,7 @@ class LargeTownHouse extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "LargeTownHouse",
       props: this._props,
@@ -253,6 +256,7 @@ class PoolFountain extends Building {
     this._h = props.w
     this._r = props.rd
     this._lyt = 1
+    this._props = props
   }
 
   is_selected(mx, my) {
@@ -326,6 +330,7 @@ class PoolFountain extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "PoolFountain",
       props: this._props,
@@ -342,6 +347,7 @@ class Well extends Building {
   constructor(x, y, props = { w: 5 }) {
     super(x, y, 0)
     this._w = props.w
+    this._props = props
   }
 
   is_selected(mx, my) {
@@ -356,6 +362,7 @@ class Well extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "Well",
       props: this._props,
@@ -401,6 +408,7 @@ class Stall extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "Stall",
       props: this._props,
@@ -447,6 +455,7 @@ class Tent extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "Tent",
       props: this._props,
@@ -468,11 +477,7 @@ class LargeTent extends Building {
 
   is_selected(mx, my) {
     let prev = this._selected
-    this._selected = mx >= (this._x - this._w / 2) &&
-      mx <= (this._x + this._w / 2) &&
-      my >= (this._y - this._h / 2) &&
-      my <= (this._y + this._h / 2)
-
+    this._selected = dist(this._x, this._y, mx, my) <= this._w
     return prev != this._selected
   }
 
@@ -497,6 +502,7 @@ class LargeTent extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "LargeTent",
       props: this._props,
@@ -684,6 +690,7 @@ class BigHouseCentralYard extends Building {
   }
 
   export_json() {
+    this._props.angle = this._angle
     let json = {
       type: "BigHouseCentralYard",
       props: this._props,
@@ -698,19 +705,19 @@ class BigHouseCentralYard extends Building {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// ==================
+function buildings_import_json(obj) {
+  let map = { "TownHouse": TownHouse, "LargeTownHouse": LargeTownHouse,
+    "PoolFountain": PoolFountain,     "Well": Well,
+    "Stall": Stall, "Tent": Tent, "LargeTent": LargeTent,
+    "BigHouseCentralYard": BigHouseCentralYard
+  }
+  let build = new map[obj.type](obj.props.x, obj.props.y, obj.props)
+  build.set_style(obj.style)
+  build._angle = obj.props.angle
+  return(build)
+}
+// ==================
 
 class Square {
   constructor(x, y, fColor, sColor, angle = 0, sz = [50, 80], cr = [4, 6]) {

@@ -144,7 +144,7 @@ class Board {
         key = keyValue.toLowerCase()
         switch(key) {
           case "s":
-            if(this._special_keys.indexOf('control') > -1) {
+            if(this._special_keys.indexOf('control') > -1) { // ctr + s: save json
               this.export_json()
             } else {
               console.log("rotate_style")
@@ -154,15 +154,19 @@ class Board {
           case "i":
             if(this._special_keys.indexOf('control') > -1) {
               this.export_png()
-            } else {
-              // TODO:?
             }
             break
-          case "r":
+          case "n":
             if(this._special_keys.indexOf('control') > -1) {
               this._action_rename = true
+            }
+          case "r":
+            if(this._special_keys.indexOf('control') > -1 && this._special_keys.indexOf('shift') > -1) {
+              -this._map.rotate(-0.765)
+            } if(this._special_keys.indexOf('control') > -1 & this._special_keys.indexOf('shift') == -1) {
+              -this._map.rotate(0.765)
             } else if(this._special_keys.indexOf('shift') > -1) {
-              this._map.rotate(0.765)
+              this._map.rotate(-0.017)
             } else {
               this._map.rotate(0.017)
             }

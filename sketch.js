@@ -10,12 +10,16 @@ var tmp
 
 function setup() {
   let cnv = createCanvas(board._w, board._h)
-  cnv.drop(board.import_json)
+  cnv.drop(import_json)
 }
 
 function draw() {
   background(240)
   board.draw()
+}
+
+function import_json(file) {
+  board.import_json(file)
 }
 
 function keyPressed() {

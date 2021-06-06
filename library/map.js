@@ -13,9 +13,9 @@ class Map {
   
   import_json(data) {
     this._name = data.title
-    this._terrain = data.objects.terrain.map( (obj) => terrain_import_json(obj) )
+    //this._terrain = data.objects.terrain.map( (obj) => terrain_import_json(obj) )
     this._buildings = data.objects.buildings.map( (obj) => buildings_import_json(obj) )
-    this._decor = data.objects.decoration.map( (obj) => decoration_import_json(obj) )
+    //this._decor = data.objects.decoration.map( (obj) => decoration_import_json(obj) )
   }
   
   export_json(board_w, board_h, board_scale) {
