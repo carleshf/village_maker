@@ -131,16 +131,19 @@ function map_add_house(board, mx, my, sz = 0) {
   board._map.add_to_buildings(nhouse)
 }
 
-function boardAddPathOrNode(board, mx, my) {
-  board._map.unselect()
-  
-  var sel = board._terrain.filter((obj) => obj.is_selected(mx, my))
+function boardAddPathOrNode(board, mx, my, st = 0) {
+  var sel = board._map._terrain.filter((obj) => obj.is_selected(mx, my))
   if(sel.length == 1) {
-    sel[0].addNode(mx, my)
+    sel[0].add_node(mx, my)
   } else {
-    board._terrain.map((obj) => obj.set_selected(false, false))
-    var npath = new Path(mx, my)
+    board._map.unselect()
+    var npath
+    //if(st == 0) {
+    npath = new CurvePath(mx, my, board._style.draw)
+    /*} else {
+      npath = new AnglePath(mx, my, board._style.draw)
+    }*/
     npath.set_selected(true, true)
-    board._terrain.push(npath)
+    board._map._terrain.push(npath)
   }
 }

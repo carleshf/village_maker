@@ -9,54 +9,90 @@ class Point {
   constructor(x, y) {
     this._x = x
     this._y = y
+    this._r = RADIUS_POINT
     this._visible = false
     this._selected = false
   }
   
-  setVisible(status = false) {
+  set_visible(status = false) {
     this._visible = status
   }
   
-  isSelected(mx, my) {
+  is_selected(mx, my) {
     let xp = mx - this._x
     let yp = my - this._y
-    this._selected = xp * xp + yp * yp <= RADIUS_POINT
+    this._selected = xp * xp + yp * yp <= this._r
     return this._selected
   }
   
-  draw() {
-    if(this._visible) {
+  draw(show_nodes) {
+    if(this._visible || show_nodes) {
+      rectMode(CENTER)
       ellipseMode(CENTER)
       ellipseMode(RADIUS)
-      strokeWeight(WIDTH_LINE)
-      if(this._selected) {
-        fill(COLOR_SELECTED)
+
+      if (this._selected) {
+        stroke(this._style.color_select)
+        strokeWeight(this._style.line_width_selected)
       } else {
-        fill(COLOR_DRAW)
+        stroke(this._style.color_line)
+        strokeWeight(this._style.line_width)
       }
+      fill(this._style.color_fill)
+
       circle(this._x, this._y, RADIUS_POINT * 2)
+    }
+  }
+
+  set_style(style) {
+    console.log("node set_style")
+    this._style = {
+      color_background: style.color_background,
+      color_fill: style.color_fill,
+      color_line: style.color_line,
+      color_select: style.color_select,
+      point_radius: style.point_radius,
+      line_width: style.line_width,
+      line_width_selected: style.line_width_selected
     }
   }
 }
 
-class Path {
-  constructor(ox, oy) {
-    this._nodes = [new Point(ox, oy)]
+class CurvePath {
+  constructor(ox, oy, style) {
+    this._nodes = []
     this._show_nodes = true
     this._selected = false
     this._active = false
+    this._lyt = 0
+    this.set_style(style)
+    this.add_node(ox, oy)
+  }
+
+  set_style(style) {
+    console.log("path set_style")
+    this._style = {
+      color_background: style.color_background,
+      color_fill: style.color_fill,
+      color_line: style.color_line,
+      color_select: style.color_select,
+      point_radius: style.point_radius,
+      line_width: style.line_width,
+      line_width_selected: style.line_width_selected
+    }
   }
   
-  addNode(mx, my) {
+  add_node(mx, my) {
     let npoint = new Point(mx, my)
     npoint._visible = true
+    npoint.set_style(this._style)
     this._nodes.push(npoint)
   }
   
-  isSelected(mx, my) {
+  is_selected(mx, my) {
     let s = false
     for(var ii = 0; ii < this._nodes.length; ii++) {
-      s = this._nodes[ii].isSelected(mx, my) | s
+      s = this._nodes[ii].is_selected(mx, my) | s
     }
     this._selected = s | this._active
     if(this._selected) {
@@ -65,33 +101,44 @@ class Path {
     return this._selected
   }
   
-  setSelected(status = true, active = false) {
+  set_selected(status = true, active = false) {
     this._selected = status
     this._active = active
     this._nodes.map((obj) => obj._visible = status)
   }
   
   draw() {
-    if(this._selected) {
-      stroke(COLOR_SELECTED)
-      strokeWeight(WIDTH_LINE_SELECTED)
+    if (this._selected) {
+      stroke(this._style.color_select)
+      strokeWeight(this._style.line_width_selected)
     } else {
-      stroke(COLOR_DRAW)
-      strokeWeight(WIDTH_LINE)
+      stroke(this._style.color_line)
+      strokeWeight(this._style.line_width)
     }
     noFill()
     if(this._nodes.length > 1) {
       beginShape()
       for(var ii = 0; ii < this._nodes.length; ii++) {
-        curveVertex(
-          //this._nodes[ii -1]._x, this._nodes[ii - 1]._y, 
-          this._nodes[ii]._x,    this._nodes[ii]._y
-        )
+        if(this._lyt == 0 || this._lyt == 2) {
+          curveVertex(
+            //this._nodes[ii -1]._x, this._nodes[ii - 1]._y, 
+            this._nodes[ii]._x,    this._nodes[ii]._y
+          )
+        } else {
+          vertex(
+            //this._nodes[ii -1]._x, this._nodes[ii - 1]._y, 
+            this._nodes[ii]._x,    this._nodes[ii]._y
+          )
+        }
       }
       endShape()
     }
-    this._nodes.forEach((node) => node.draw())
+    this._nodes.forEach((node) => node.draw(this._lyt == 2 || this._lyt == 3))
   }
   
-  rStyle() { }
+  rotate_style() {
+    this._lyt = (this._lyt + 1) % 4
+   }
+
+  drag(mx, my) { }
 }

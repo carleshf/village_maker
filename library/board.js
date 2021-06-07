@@ -147,7 +147,6 @@ class Board {
             if(this._special_keys.indexOf('control') > -1) { // ctr + s: save json
               this.export_json()
             } else {
-              console.log("rotate_style")
               this._map.rotate_style()
             }
             break
@@ -156,7 +155,7 @@ class Board {
               this.export_png()
             }
             break
-          case "n":
+          case "o":
             if(this._special_keys.indexOf('control') > -1) {
               this._action_rename = true
             }
@@ -240,6 +239,7 @@ class Board {
     this._w = file.data.board.w
     this._h = file.data.board.h
     this._map.import_json(file.data.map)
+    resizeCanvas(this._w, this._h, true)
   }
   
   export_png() {

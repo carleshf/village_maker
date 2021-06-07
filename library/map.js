@@ -12,6 +12,8 @@ class Map {
   }
   
   import_json(data) {
+    this._w = data.props.w
+    this._h = data.props.h
     this._name = data.title
     //this._terrain = data.objects.terrain.map( (obj) => terrain_import_json(obj) )
     this._buildings = data.objects.buildings.map( (obj) => buildings_import_json(obj) )
@@ -23,11 +25,12 @@ class Map {
     const json = {
       board: { 
           w: board_w, 
-          h: board_w,
+          h: board_h,
           scale: board_scale
       },
       map: {
         title: this._name,
+        props: { w: this._w, h: this._h },
         objects: {
           terrain: this._terrain.map( (obj) => obj.export_json() ),
           buildings: this._buildings.map( (obj) => obj.export_json() ),
