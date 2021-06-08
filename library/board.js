@@ -219,9 +219,9 @@ class Board {
   
   key_released(key, keyValue, mx, my) {
     if(key == 17) {
-      this._special_keys.splice(this._special_keys.indexOf('control'), 1)
+      this._special_keys = this._special_keys.filter( (key) => key != "control" )
     } else if(key == 16) {
-      this._special_keys.splice(this._special_keys.indexOf('shift'), 1)
+      this._special_keys = this._special_keys.filter( (key) => key != "shift" )
     }
   }
   
