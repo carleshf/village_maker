@@ -1,6 +1,12 @@
 class Actions {
   constructor(board) {
     this._map = [
+      { _text: "Terrain", _actions: [
+        { _text: "Create curve path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 0) }, _activ: true },
+        { _text: "Create angular path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 1) }, _activ: true },
+        { _text: "Increase elevation", _run: function(mx, my) { }, _activ: true },
+        { _text: "Decrease elevation", _run: function(mx, my) { }, _activ: true },
+      ]},
       { _text: "Buildings", _actions: [
         { _text: "Add small rct. house", _run: function(mx, my) { map_add_house(board, mx, my, 0) }, _activ: true },
         { _text: "Add small sqr. house", _run: function(mx, my) { map_add_house(board, mx, my, 1) }, _activ: true },
@@ -12,11 +18,6 @@ class Actions {
         { _text: "Add pool fountain", _run: function(mx, my) { map_add_fountain(board, mx, my) }, _activ: true },
         { _text: "Add tent", _run: function(mx, my) { map_add_tent(board, mx, my, 1) }, _activ: true },
         { _text: "Add large tent", _run: function(mx, my) { map_add_tent(board, mx, my, 2) }, _activ: true },
-      ]},
-      { _text: "Terrain", _actions: [
-        { _text: "Create path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my) }, _activ: true },
-        { _text: "Increase elevation", _run: function(mx, my) { }, _activ: true },
-        { _text: "Decrease elevation", _run: function(mx, my) { }, _activ: true },
       ]},
       { _text: "Map", _actions: [
         { _text: "Increase 10px in w", _run: function(mx, my) { board._change_size(10, 0) }, _activ: false },
@@ -131,18 +132,18 @@ function map_add_house(board, mx, my, sz = 0) {
   board._map.add_to_buildings(nhouse)
 }
 
-function boardAddPathOrNode(board, mx, my, st = 0) {
+function boardAddPathOrNode(board, mx, my, st) {
   var sel = board._map._terrain.filter((obj) => obj.is_selected(mx, my))
   if(sel.length == 1) {
     sel[0].add_node(mx, my)
   } else {
     board._map.unselect()
     var npath
-    //if(st == 0) {
-    npath = new CurvePath(mx, my, board._style.draw)
-    /*} else {
+    if(st == 0) {
+      npath = new CurvePath(mx, my, board._style.draw)
+    } else if(st == 1) {
       npath = new AnglePath(mx, my, board._style.draw)
-    }*/
+    }
     npath.set_selected(true, true)
     board._map._terrain.push(npath)
   }

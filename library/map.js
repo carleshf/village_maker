@@ -66,6 +66,7 @@ class Map {
   }
 
   drag(mx, my) {
+    console.log("map drag")
     this._terrain.map( (obj) => obj.drag(mx, my) )
     this._buildings.map( (obj) => obj.drag(mx, my) )
     this._decor.map( (obj) => obj.drag(mx, my) )
