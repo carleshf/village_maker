@@ -74,9 +74,9 @@ class Board {
       textFont(_actionFont)
       textSize(this._action_fs)
       if(this._action_on) {
-        text("(Action Status) Activate", this._x + this._w - 185 - MAR_W[ 1 ], this._y + this._map._h + MAR_H[ 1 ] + this._action_fs)
+        text("(Action Status) Activated", this._x + this._w - 185 - MAR_W[ 1 ], this._y + this._map._h + MAR_H[ 1 ] + this._action_fs)
       } else {
-        text("(Action Status) Deactivate", this._x + this._w - 185 - MAR_W[ 1 ], this._y + this._map._h + MAR_H[ 1 ] + this._action_fs)
+        text("(Action Status) Deactivated", this._x + this._w - 185 - MAR_W[ 1 ], this._y + this._map._h + MAR_H[ 1 ] + this._action_fs)
       }
     }
   }
@@ -236,6 +236,7 @@ class Board {
   }
   
   import_json(file) {
+    this._map.clear()
     this._w = file.data.board.w
     this._h = file.data.board.h
     this._map.import_json(file.data.map)

@@ -2,8 +2,9 @@ class Actions {
   constructor(board) {
     this._map = [
       { _text: "Terrain", _actions: [
-        { _text: "Create curve path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 0) }, _activ: true },
-        { _text: "Create angular path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 1) }, _activ: true },
+        { _text: "Create opened curve path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 0) }, _activ: true },
+        { _text: "Create opened angular path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 1) }, _activ: true },
+        { _text: "Create closed angular path", _run: function(mx, my) { boardAddPathOrNode(board, mx, my, 2) }, _activ: true },
         { _text: "Increase elevation", _run: function(mx, my) { }, _activ: true },
         { _text: "Decrease elevation", _run: function(mx, my) { }, _activ: true },
       ]},
@@ -143,6 +144,8 @@ function boardAddPathOrNode(board, mx, my, st) {
       npath = new CurvePath(mx, my, board._style.draw)
     } else if(st == 1) {
       npath = new AnglePath(mx, my, board._style.draw)
+    } else {
+      npath = new AngleClosedPath(mx, my, board._style.draw)
     }
     npath.set_selected(true, true)
     board._map._terrain.push(npath)

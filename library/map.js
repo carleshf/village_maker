@@ -102,4 +102,10 @@ class Map {
   add_to_decor(obj) {
     this._decor.push(obj)
   }
+
+  clear() {
+    this._terrain = []
+    this._buildings = []
+    this._decor = []
+  }
 }
