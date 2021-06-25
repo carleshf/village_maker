@@ -1,6 +1,8 @@
 let _actionFont
+let _titleFont
 function preload_map() {
-  _actionFont = loadFont('assets/VT323-Regular.ttf')
+  _actionFont = loadFont("assets/VT323-Regular.ttf")
+  _titleFont = loadFont("assets/Pacifico-Regular.ttf")
 }
 
 const BOARD_BACKGROUND = "#FAFAFA"
@@ -244,6 +246,30 @@ class Board {
   }
   
   export_png() {
-  	// this._map.export_png()
+    if(this._map != null) {
+      this._show_board = false
+
+      // DRAW LAYOUT
+      rectMode(CORNER)
+      noStroke()
+      fill(this._style.draw.color_background)
+      rect(this._x, this._y, this._w, this._h)
+      
+      // DRAW ELEMENTS IN THE MAP
+      this._map.draw(this._scale)
+
+      textFont(_titleFont)
+      textSize(37)
+      fill('#000000')
+      noStroke()
+      textAlign(LEFT, CENTER)
+      text(this._map._name, 20, 20)
+
+      var filename = this._map._name.replaceAll(" ", "_") + ".png"
+      saveCanvas(filename, 'png')
+
+      this._show_board = true
+      textAlign(LEFT, BOTTOM)
+    }
   }
 }

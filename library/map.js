@@ -15,7 +15,7 @@ class Map {
     this._w = data.props.w
     this._h = data.props.h
     this._name = data.title
-    //this._terrain = data.objects.terrain.map( (obj) => terrain_import_json(obj) )
+    this._terrain = data.objects.terrain.map( (obj) => terrain_import_json(obj) )
     this._buildings = data.objects.buildings.map( (obj) => buildings_import_json(obj) )
     //this._decor = data.objects.decoration.map( (obj) => decoration_import_json(obj) )
   }
@@ -60,13 +60,12 @@ class Map {
   }
 
   rotate(ang) {
-    this._terrain.map( (obj) => obj.rotate(ang) )
+    //this._terrain.map( (obj) => obj.rotate(ang) )
     this._buildings.map( (obj) => obj.rotate(ang) )
-    this._decor.map( (obj) => obj.rotate(ang) )
+    //this._decor.map( (obj) => obj.rotate(ang) )
   }
 
   drag(mx, my) {
-    console.log("map drag")
     this._terrain.map( (obj) => obj.drag(mx, my) )
     this._buildings.map( (obj) => obj.drag(mx, my) )
     this._decor.map( (obj) => obj.drag(mx, my) )
