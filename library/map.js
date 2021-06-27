@@ -20,13 +20,14 @@ class Map {
     //this._decor = data.objects.decoration.map( (obj) => decoration_import_json(obj) )
   }
   
-  export_json(board_w, board_h, board_scale) {
+  export_json(board_w, board_h, board_scale, board_title) {
     var filename = this._name.replaceAll(" ", "_") + ".json"
     const json = {
       board: { 
           w: board_w, 
           h: board_h,
-          scale: board_scale
+          scale: board_scale,
+		  title: board_title
       },
       map: {
         title: this._name,
@@ -39,6 +40,10 @@ class Map {
       }
     }
     save(json, filename)
+  }
+  
+  toggle_title() {
+	this._show_title = !this._show_title
   }
   
   draw(scale) {

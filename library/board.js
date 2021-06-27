@@ -29,6 +29,7 @@ class Board {
     let map_w = this._w - MAR_W[ 0 ] - MAR_W[ 1 ]
     let map_h = this._h - MAR_H[ 0 ] - MAR_H[ 1 ]
     this._map = new Map(MAR_W[ 0 ], MAR_H[ 0 ], map_w, map_h)
+	this._title = { show: true, x: 30, y: 60 }
     this._style = { 
       board: {
         background: BOARD_BACKGROUND, 
@@ -111,7 +112,19 @@ class Board {
     
     // DRAW ELEMENTS IN THE MAP
     this._map.draw(this._scale)
-    
+	
+	
+	if(this._title.show) {
+      textFont(_titleFont)
+      textSize(37)
+      fill('#000000')
+      noStroke()
+      textAlign(LEFT, CENTER)
+      text(this._map._name, this._title.x, this._title.y)
+      this._show_board = true
+      textAlign(LEFT, BOTTOM)
+	}
+	
     // DRAW ACCTIONS BAR
     this._draw_actions()
     this._draw_action_status()
@@ -158,9 +171,33 @@ class Board {
             }
             break
           case "o":
-            if(this._special_keys.indexOf('control') > -1) {
+            if(this._special_keys.indexOf('shift') > -1) {
               this._action_rename = true
             }
+            break
+          case "t":
+            if(this._special_keys.indexOf('shift') > -1) {
+              this._title.show = !this._title.show
+            }
+            break
+          case "l":
+            if(this._title.show){
+              if(this._special_keys.indexOf('shift') > -1) {
+                this._title.y += 1
+              } else {
+                this._title.x += 1
+              }
+            }
+            break
+          case "k":
+            if(this._title.show){
+              if(this._special_keys.indexOf('shift') > -1) {
+                this._title.y -= 1
+              } else {
+                this._title.x -= 1
+              }
+            }
+            break
           case "r":
             if(this._special_keys.indexOf('control') > -1 && this._special_keys.indexOf('shift') > -1) {
               -this._map.rotate(-0.765)
@@ -233,7 +270,7 @@ class Board {
   
   export_json() {
     if(this._map != null) {
-      this._map.export_json(this._w, this._h, this._scale)
+      this._map.export_json(this._w, this._h, this._scale, this._title)
     }
   }
   
